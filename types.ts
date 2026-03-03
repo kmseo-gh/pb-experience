@@ -4,7 +4,15 @@ export enum StockId {
   CELLTRION = 'Celltrion',
   HANWHA = 'Hanwha',
   TESLA = 'Tesla',
-  NVIDIA = 'Nvidia'
+  NVIDIA = 'Nvidia',
+  KB = 'KB',
+  KODEX_GOLD = 'KodexGold',
+  AMORE = 'Amore',
+  SAMYANG = 'Samyang',
+  HANATOUR = 'Hanatour',
+  KOREAN_AIR = 'KoreanAir',
+  HYUNDAI_HEAVY = 'HyundaiHeavy',
+  NETFLIX = 'Netflix'
 }
 
 export interface RoundScenario {
@@ -38,5 +46,5 @@ export interface GameState {
     comment: string;
   }[];
   isGameOver: boolean;
-  selectedCharacter: 'rich' | 'idol' | 'chairman' | 'sport';
+  selectedCharacter: 'rich' | 'idol' | 'chairman' | 'sport' | 'heir' | 'newly';
 }

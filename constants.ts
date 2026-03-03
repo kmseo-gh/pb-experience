@@ -7,6 +7,14 @@ export const STOCK_LIST: { id: StockId; name: string; sector: string; logo: stri
   { id: StockId.HANWHA, name: '한화에어로스페이스', sector: '방산/항공우주', logo: '/assets/ticker/한화에어로스페이스.png' },
   { id: StockId.TESLA, name: '테슬라', sector: '전기차', logo: '/assets/ticker/테슬라.png' },
   { id: StockId.NVIDIA, name: '엔비디아', sector: 'AI 반도체', logo: '/assets/ticker/엔비디아.png' },
+  { id: StockId.KB, name: 'KB금융', sector: '금융', logo: '/assets/ticker/KB금융.png' },
+  { id: StockId.KODEX_GOLD, name: 'KODEX 금액티브', sector: '원자재', logo: '/assets/ticker/KODEX금액티브.png' },
+  { id: StockId.AMORE, name: '아모레퍼시픽', sector: '화장품/소비재', logo: '/assets/ticker/아모레퍼시픽.png' },
+  { id: StockId.SAMYANG, name: '삼양식품', sector: '식음료', logo: '/assets/ticker/삼양식품.png' },
+  { id: StockId.HANATOUR, name: '하나투어', sector: '여행/레저', logo: '/assets/ticker/하나투어.png' },
+  { id: StockId.KOREAN_AIR, name: '대한항공', sector: '항공/운송', logo: '/assets/ticker/대한항공.png' },
+  { id: StockId.HYUNDAI_HEAVY, name: 'HD현대중공업', sector: '조선/중공업', logo: '/assets/ticker/HD현대중공업.png' },
+  { id: StockId.NETFLIX, name: '넷플릭스', sector: 'OTT/콘텐츠', logo: '/assets/ticker/넷플릭스.png' },
 ];
 
 export const ROUNDS: RoundScenario[] = [
@@ -29,17 +37,17 @@ export const ROUNDS: RoundScenario[] = [
       '지금이 조정의 구간인지, 하락의 시작인지, 판단은 PB의 몫입니다.'
     ],
     marketCondition: {
-      cashReturn: 0.04, // High interest rates favor cash
+      cashReturn: 0.04,
       stockReturns: {
-        [StockId.SAMSUNG]: -0.05,
-        [StockId.NAVER]: -0.15, // Growth stocks hit hard
-        [StockId.CELLTRION]: -0.05,
-        [StockId.HANWHA]: -0.02,
-        [StockId.TESLA]: -0.20,
-        [StockId.NVIDIA]: -0.15,
-      },
+        [StockId.KB]: 0.03, // Rising (but not much)
+        [StockId.NVIDIA]: 0.0, // Sideways
+        [StockId.SAMSUNG]: 0.0, // Sideways
+        [StockId.HANWHA]: 0.0, // Sideways
+        [StockId.CELLTRION]: -0.07, // Falling
+        [StockId.NAVER]: -0.07, // Falling
+      } as any,
     },
-    keyFocus: '변동성이 큰 시기에는 현금을 든든한 방패로 챙겨두는 게 어떨까요? 40~60% 정도의 방어적인 배분이 유리할 수도 있어요.',
+    keyFocus: '금리 인상기에는 금융주가 방어적인 성격을 띠곤 하죠. 성장주들의 하락세를 어떻게 방어할지가 관건입니다.',
   },
   {
     id: 2,
@@ -61,15 +69,15 @@ AI 산업에 자금이 몰린다.
     marketCondition: {
       cashReturn: 0.02,
       stockReturns: {
-        [StockId.SAMSUNG]: 0.08,
-        [StockId.NAVER]: 0.05,
-        [StockId.CELLTRION]: 0.01,
-        [StockId.HANWHA]: 0.03,
-        [StockId.TESLA]: 0.12,
-        [StockId.NVIDIA]: 0.30, // Main beneficiary
-      },
+        [StockId.NVIDIA]: 0.20, // Rising a lot
+        [StockId.SAMSUNG]: 0.15, // Rising
+        [StockId.HANWHA]: 0.01, // Sideways
+        [StockId.KODEX_GOLD]: 0.01, // Sideways
+        [StockId.AMORE]: -0.12, // Falling
+        [StockId.SAMYANG]: -0.12, // Falling
+      } as any,
     },
-    keyFocus: '시장의 뜨거운 열기에 올라타 보는 건 어떨까요? 70~90% 정도 과감하게 주식을 담아봐도 좋을 시기예요.',
+    keyFocus: 'AI 기술주들의 랠리가 무섭습니다. 과감한 베팅으로 수익률을 끌어올려 보세요!',
   },
   {
     id: 3,
@@ -91,15 +99,15 @@ AI 산업에 자금이 몰린다.
     marketCondition: {
       cashReturn: 0.01,
       stockReturns: {
-        [StockId.SAMSUNG]: -0.10,
-        [StockId.NAVER]: -0.12,
-        [StockId.CELLTRION]: -0.05, // Defensive
-        [StockId.HANWHA]: 0.25, // War beneficiary
-        [StockId.TESLA]: -0.15,
-        [StockId.NVIDIA]: -0.12,
-      },
+        [StockId.HANWHA]: 0.10, // Rising (Defense)
+        [StockId.KODEX_GOLD]: 0.08, // Rising (Gold)
+        [StockId.SAMSUNG]: 0.0, // Sideways
+        [StockId.NVIDIA]: 0.0, // Sideways
+        [StockId.HANATOUR]: -0.25, // Falling a lot
+        [StockId.KOREAN_AIR]: -0.25, // Falling a lot
+      } as any,
     },
-    keyFocus: '갑작스러운 공포에는 현금으로 방어막(50~70%)을 치거나, 위기에 강한 섹터를 선점하는 전략이 필요합니다.',
+    keyFocus: '전쟁은 여행과 항공업계에 큰 타격을 주지만, 방산과 금 같은 안전자산에는 기회가 될 수 있습니다.',
   },
   {
     id: 4,
@@ -118,15 +126,15 @@ AI 산업에 자금이 몰린다.
     marketCondition: {
       cashReturn: 0.01,
       stockReturns: {
-        [StockId.SAMSUNG]: 0.05,
-        [StockId.NAVER]: 0.20, // Untact beneficiary
-        [StockId.CELLTRION]: 0.25, // Bio beneficiary
-        [StockId.HANWHA]: -0.10,
-        [StockId.TESLA]: 0.15, // Liquidity rally
-        [StockId.NVIDIA]: 0.10,
-      },
+        [StockId.CELLTRION]: 0.15, // Rising (Bio)
+        [StockId.NETFLIX]: 0.12, // Rising (Untact/Content)
+        [StockId.SAMSUNG]: 0.01, // Sideways
+        [StockId.NVIDIA]: 0.01, // Sideways
+        [StockId.KODEX_GOLD]: 0.01, // Sideways
+        [StockId.HYUNDAI_HEAVY]: -0.15, // Falling
+      } as any,
     },
-    keyFocus: '위기 속에서도 침착하게 60% 정도의 주식 비중을 가져가면 어떨까요? 멀리 내다보는 혜안이 필요한 때예요.',
+    keyFocus: '팬데믹 상황에서는 바이오와 언택트 관련주들이 강세를 보입니다. 전통 제조/중화학 산업의 위기를 어떻게 피해갈지 결정하세요.',
   },
 ];
 
@@ -135,10 +143,10 @@ export const INITIAL_PORTFOLIO: Portfolio = {
   stockRatio: 70,
   stockAllocation: {
     [StockId.SAMSUNG]: 20,
-    [StockId.NAVER]: 15,
-    [StockId.CELLTRION]: 15,
-    [StockId.HANWHA]: 10,
-    [StockId.TESLA]: 20,
     [StockId.NVIDIA]: 20,
-  },
+    [StockId.KB]: 20,
+    [StockId.HANWHA]: 20,
+    [StockId.CELLTRION]: 10,
+    [StockId.NAVER]: 10,
+  } as any,
 };

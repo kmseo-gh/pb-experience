@@ -125,6 +125,21 @@ const App: React.FC = () => {
     // Temporary state for the current round's decision
     const [tempPortfolio, setTempPortfolio] = useState<Portfolio>({ ...INITIAL_PORTFOLIO });
 
+    // --- Effects ---
+    useEffect(() => {
+        if (currentScenario) {
+            const activeStockIds = Object.keys(currentScenario.marketCondition.stockReturns) as StockId[];
+            const initialAllocation: Record<StockId, number> = {} as any;
+            activeStockIds.forEach(id => {
+                initialAllocation[id] = 10; // Default weight for active stocks
+            });
+            setTempPortfolio(prev => ({
+                ...prev,
+                stockAllocation: initialAllocation
+            }));
+        }
+    }, [gameState.currentRound]);
+
     // --- Helper Functions ---
     const showToast = (message: string) => {
         setToast({ message, visible: true });
@@ -186,7 +201,7 @@ const App: React.FC = () => {
         let weightedStockReturn = 0;
         (Object.keys(normalizedStocks) as StockId[]).forEach(key => {
             const weight = normalizedStocks[key] / 100;
-            const ret = currentScenario.marketCondition.stockReturns[key];
+            const ret = currentScenario.marketCondition.stockReturns[key] || 0;
             weightedStockReturn += weight * ret;
         });
 
@@ -241,7 +256,7 @@ const App: React.FC = () => {
                 comment = "사막의 한가운데서 나침반을 잃어버린 기분이야. 내 자산이 장난인가?";
             }
         } else if (id === 4) { // Round 4: Pandemic
-            if ((normalizedStocks[StockId.CELLTRION] > 15 || normalizedStocks[StockId.NAVER] > 15) && profitPercent > 0) {
+            if ((normalizedStocks[StockId.CELLTRION] > 15 || normalizedStocks[StockId.NETFLIX] > 15) && profitPercent > 0) {
                 satisfaction = Math.min(satisfaction + 5, 100);
                 comment = "포트폴리오 구성이 아주 예술이야! 오늘 당장 그 차 계약하러 가게.";
             } else if (tempPortfolio.stockRatio < 30) {
@@ -288,9 +303,11 @@ const App: React.FC = () => {
     const handleStart = () => {
         if (gameState.selectedCharacter !== 'rich') {
             const messages: Record<string, string> = {
-                sport: "스포츠 스타는 현재 훈련 중입니다! 넉넉한 자산가님의 포트폴리오를 먼저 관리해 보시겠어요?",
-                chairman: "기업가는 현재 신규 사업 구상 중입니다! 지금은 자산가 PB로서 역량을 발휘해 보세요.",
-                idol: "글로벌 아이돌은 월드 투어 중입니다! 자산가의 자산을 먼저 불려주시는 건 어떨까요?"
+                sport: "송운동님은 현재 훈련 중입니다! 천수르님의 포트폴리오를 먼저 관리해 보시겠어요?",
+                chairman: "나대표님은 현재 신규 사업 구상 중입니다! 지금은 PB로서 역량을 발휘해 보세요.",
+                idol: "엘라님은 글로벌 월드 투어 중입니다! 천수르님의 자산을 먼저 불려주시는 건 어떨까요?",
+                heir: "박재벌님은 경영 수업 중입니다! 천수르님의 자산을 먼저 관리해 보세요.",
+                newly: "김졸부님은 현재 여행 중입니다! 천수르님의 자산을 먼저 불려주시는 건 어떨까요?"
             };
             showToast(messages[gameState.selectedCharacter] || "준비 중인 캐릭터입니다.");
             setGameState(prev => ({ ...prev, selectedCharacter: 'rich' }));
@@ -324,7 +341,7 @@ const App: React.FC = () => {
 
     const renderIntro = () => (
         <div className="flex-1 flex flex-col items-center justify-center text-center animate-samsung-up">
-            <div className="w-full samsung-card p-10 text-center relative overflow-hidden">
+            <div className="w-full samsung-card p-6 text-center relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl -mr-16 -mt-16 opacity-50"></div>
 
                 {/* Intro Content */}
@@ -334,24 +351,26 @@ const App: React.FC = () => {
 
                 <h1 className="text-[32px] font-black text-[#1A1F27] mb-3 tracking-tighter leading-tight relative z-10">두근두근‼️<br />억만장자 키우기</h1>
                 <p className="text-slate-500 font-medium mb-6 text-[16px] leading-relaxed relative z-10">
-                    당신은 삼성증권의 <span className="text-[#0351FF] font-bold">VIP 전담 PB</span>입니다.<br />
+                    당신은 <span className="text-[#0351FF] font-bold">삼성증권</span>의 <span className="text-[#0351FF] font-bold">VIP 전담 PB</span>입니다.<br />
                     매 라운드마다 바뀌는 경제 상황!<br />
                     당신의 선택이 VIP의 미래를 결정합니다.<br /><br />
                     <span className="text-[#0351FF] font-bold">1. 자산 배분:</span> <br />제한된 종목에서 자산 비중을 최적화하세요.<br />
                     <span className="text-[#0351FF] font-bold">2. 고객 선택:</span> <br />당신의 운명을 함께할 VIP를 선택하세요!<br />
                 </p>
 
-                <div className="grid grid-cols-2 gap-4 mb-12 relative z-10">
+                <div className="grid grid-cols-3 gap-3 mb-10 relative z-10">
                     {[
-                        { id: 'rich', name: '자산가', role: 'The Wealthy', img: '/assets/rich_neutral.png', available: true },
-                        { id: 'sport', name: '스포츠 스타', role: 'Sport Star', img: '/assets/sport_neutral.png', available: false },
-                        { id: 'chairman', name: '기업가', role: 'CEO', img: '/assets/chairman_neutral.png', available: false },
-                        { id: 'idol', name: '아이돌', role: 'Global Idol', img: '/assets/idol_neutral.png', available: false }
+                        { id: 'rich', name: '천수르', role: '자산가', img: '/assets/rich_neutral.png', available: true },
+                        { id: 'sport', name: '송운동', role: '축구선수', img: '/assets/sport_neutral.png', available: false },
+                        { id: 'heir', name: '박재벌', role: '재벌3세', img: '/assets/heir_neutral.png', available: false },
+                        { id: 'idol', name: '정엘라', role: '아이돌', img: '/assets/idol_neutral.png', available: false },
+                        { id: 'newly', name: '김졸부', role: '벼락부자', img: '/assets/newly_neutral.png', available: false },
+                        { id: 'chairman', name: '나대표', role: 'CEO', img: '/assets/chairman_neutral.png', available: false }
                     ].map((char) => (
                         <div
                             key={char.id}
                             onClick={() => setGameState(prev => ({ ...prev, selectedCharacter: char.id as any }))}
-                            className={`group cursor-pointer rounded-[32px] border-2 transition-all duration-300 p-2.5 relative ${gameState.selectedCharacter === char.id
+                            className={`group cursor-pointer rounded-[32px] border-2 transition-all duration-300 p-1.5 relative ${gameState.selectedCharacter === char.id
                                 ? 'border-[#0351FF] bg-blue-50/30 shadow-xl shadow-blue-500/5'
                                 : 'border-white bg-white shadow-sm hover:border-gray-200 hover:shadow-md'
                                 }`}
@@ -381,7 +400,7 @@ const App: React.FC = () => {
             </div>
 
             <div className="mt-8 text-center space-y-1 relative z-10">
-                <p className="text-[10px] text-gray-400 font-bold tracking-widest uppercase">Samsung Securities PB Simulation</p>
+                <p className="text-[10px] text-gray-400 font-bold tracking-widest">Samsung Securities PB Simulation</p>
                 <p className="text-[9px] text-gray-400/60 font-medium">본 서비스는 가상 시뮬레이션이며, 실존 인물의 실제 판단과 무관합니다.</p>
             </div>
         </div>
@@ -410,7 +429,7 @@ const App: React.FC = () => {
                         <div className="bg-[#1A1F27] p-6 text-white relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
                             <div className="relative z-10">
-                                <span className="text-[10px] font-black tracking-[0.25em] text-blue-400 uppercase mb-1 block">CHIEF PB PERFORMANCE REPORT</span>
+                                <span className="text-[10px] font-black tracking-[0.25em] text-blue-400 uppercase mb-1 block">PB PERFORMANCE REPORT</span>
                                 <div className="flex justify-between items-end">
                                     <h2 className="text-[24px] font-black tracking-tighter leading-none">운용 성과 보고서</h2>
                                     <span className="text-[11px] text-gray-400 font-bold uppercase tabular-nums">NO. {new Date().getTime().toString().slice(-8)}</span>
@@ -442,7 +461,11 @@ const App: React.FC = () => {
                                         <span className="bg-[#F2F4F7] text-[#1A1F27] text-[9px] px-2 py-0.5 rounded-full font-black tracking-widest uppercase mb-1.5 inline-block">CLIENT PROFILE</span>
                                         <div className="flex items-center gap-2">
                                             <h3 className="text-[20px] font-black text-[#1A1F27] tracking-tight">
-                                                {gameState.selectedCharacter === 'idol' ? '글로벌 아이돌' : gameState.selectedCharacter === 'chairman' ? '기업가' : gameState.selectedCharacter === 'sport' ? '스포츠 스타' : '자산가'}
+                                                {gameState.selectedCharacter === 'idol' ? '엘라' : 
+                                                 gameState.selectedCharacter === 'chairman' ? '나대표' : 
+                                                 gameState.selectedCharacter === 'sport' ? '송운동' : 
+                                                 gameState.selectedCharacter === 'heir' ? '박재벌' :
+                                                 gameState.selectedCharacter === 'newly' ? '김졸부' : '천수르'}
                                             </h3>
                                         </div>
                                     </div>
@@ -684,16 +707,19 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mb-6">
-                    {STOCK_LIST.map((stock) => (
-                        <StockGridSlider
-                            key={stock.id}
-                            label={stock.name}
-                            subLabel={`${percentages[stock.id]?.toFixed(0)}%`}
-                            logo={stock.logo}
-                            value={tempPortfolio.stockAllocation[stock.id]}
-                            onChange={(val) => handleStockWeightChange(stock.id, val)}
-                        />
-                    ))}
+                    {STOCK_LIST
+                        .filter(stock => currentScenario?.marketCondition.stockReturns[stock.id] !== undefined)
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((stock) => (
+                            <StockGridSlider
+                                key={stock.id}
+                                label={stock.name}
+                                subLabel={`${percentages[stock.id]?.toFixed(0)}%`}
+                                logo={stock.logo}
+                                value={tempPortfolio.stockAllocation[stock.id] || 0}
+                                onChange={(val) => handleStockWeightChange(stock.id, val)}
+                            />
+                        ))}
                 </div>
 
                 <div className="bg-white/50 backdrop-blur-sm border border-gray-100 p-5 rounded-[24px] mb-4 flex gap-4 items-start shadow-sm">
