@@ -287,6 +287,7 @@ const App: React.FC = () => {
         }));
 
         setStep('RESULT');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const nextRound = () => {
@@ -296,6 +297,7 @@ const App: React.FC = () => {
             setGameState(prev => ({ ...prev, currentRound: prev.currentRound + 1 }));
             setStep('SCENARIO');
         }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     // --- Handlers ---
@@ -315,6 +317,7 @@ const App: React.FC = () => {
         }
         setGameState(prev => ({ ...prev, currentRound: 1 }));
         setStep('SCENARIO');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleAssetChange = (stockPercent: number) => {
@@ -360,12 +363,12 @@ const App: React.FC = () => {
 
                 <div className="grid grid-cols-3 gap-3 mb-10 relative z-10">
                     {[
-                        { id: 'rich', name: '천수르', role: '자산가', img: '/assets/rich_neutral.png', available: true },
-                        { id: 'sport', name: '송운동', role: '축구선수', img: '/assets/sport_neutral.png', available: false },
-                        { id: 'heir', name: '박재벌', role: '재벌3세', img: '/assets/heir_neutral.png', available: false },
-                        { id: 'idol', name: '정엘라', role: '아이돌', img: '/assets/idol_neutral.png', available: false },
-                        { id: 'newly', name: '김졸부', role: '벼락부자', img: '/assets/newly_neutral.png', available: false },
-                        { id: 'chairman', name: '나대표', role: 'CEO', img: '/assets/chairman_neutral.png', available: false }
+                        { id: 'rich', name: '천수르', role: '초고액자산가', img: '/assets/characters/rich_neutral.png', available: true },
+                        { id: 'sport', name: '송운동', role: '스포츠스타', img: '/assets/characters/sport_neutral.png', available: false },
+                        { id: 'heir', name: '박재벌', role: '재벌3세', img: '/assets/characters/heir_neutral.png', available: false },
+                        { id: 'idol', name: '엘라', role: '아이돌', img: '/assets/characters/idol_neutral.png', available: false },
+                        { id: 'newly', name: '김졸부', role: '벼락부자', img: '/assets/characters/newly_neutral.png', available: false },
+                        { id: 'chairman', name: '나대표', role: 'CEO', img: '/assets/characters/chairman_neutral.png', available: false }
                     ].map((char) => (
                         <div
                             key={char.id}
@@ -444,8 +447,8 @@ const App: React.FC = () => {
                                     <div className={`w-24 h-32 rounded-[24px] overflow-hidden border-2 bg-gray-50 shadow-md ${avgScore >= 60 ? 'border-red-100' : 'border-blue-100'}`}>
                                         <img
                                             src={gameState.selectedCharacter === 'rich'
-                                                ? (avgScore >= 80 ? '/assets/rich_happy.png' : avgScore >= 60 ? '/assets/rich_neutral.png' : avgScore >= 40 ? '/assets/rich_sad.png' : '/assets/rich_angry.png')
-                                                : `/assets/${gameState.selectedCharacter}_neutral.png`}
+                                                ? (avgScore >= 80 ? '/assets/characters/rich_happy.png' : avgScore >= 60 ? '/assets/characters/rich_neutral.png' : avgScore >= 40 ? '/assets/characters/rich_sad.png' : '/assets/characters/rich_angry.png')
+                                                : `/assets/characters/${gameState.selectedCharacter}_neutral.png`}
                                             alt="Client"
                                             className="w-full h-full object-cover"
                                         />
@@ -616,7 +619,10 @@ const App: React.FC = () => {
                 </div>
 
                 <button
-                    onClick={() => setStep('ALLOC_ASSET')}
+                    onClick={() => {
+                        setStep('ALLOC_ASSET');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                     className="samsung-btn-primary w-full py-5 text-[17px] flex items-center justify-center gap-3"
                 >
                     전략 구성하기 <ChevronRight className="w-5 h-5" />
@@ -686,7 +692,10 @@ const App: React.FC = () => {
                 </div>
 
                 <button
-                    onClick={() => setStep('ALLOC_STOCK')}
+                    onClick={() => {
+                        setStep('ALLOC_STOCK');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                     className="samsung-btn-primary w-full py-5 text-[17px] flex items-center justify-center gap-3"
                 >
                     다음으로 <ChevronRight className="w-5 h-5" />

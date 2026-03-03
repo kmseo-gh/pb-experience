@@ -13,14 +13,14 @@ export const ChairmanBot: React.FC<ChairmanBotProps> = ({ message, emotion = 'ne
     // If it's the 'rich' persona, use emotion images. 
     // For others, we only have neutral for now as requested.
     if (character !== 'rich') {
-      return `/assets/${character}_neutral.png`;
+      return `/assets/characters/${character}_neutral.png`;
     }
 
     switch (emotion) {
-      case 'happy': return '/assets/rich_happy.png';
-      case 'angry': return '/assets/rich_angry.png';
-      case 'sad': return '/assets/rich_sad.png';
-      default: return '/assets/rich_neutral.png';
+      case 'happy': return '/assets/characters/rich_happy.png';
+      case 'angry': return '/assets/characters/rich_angry.png';
+      case 'sad': return '/assets/characters/rich_sad.png';
+      default: return '/assets/characters/rich_neutral.png';
     }
   };
 
