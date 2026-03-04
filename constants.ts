@@ -37,14 +37,14 @@ export const ROUNDS: RoundScenario[] = [
       '지금이 조정의 구간인지, 하락의 시작인지, 판단은 PB의 몫입니다.'
     ],
     marketCondition: {
-      cashReturn: 0.04,
+      cashReturn: 0.04, // 현금 보유 메리트 상승
       stockReturns: {
-        [StockId.KB]: 0.03, // Rising (but not much)
-        [StockId.NVIDIA]: 0.0, // Sideways
-        [StockId.SAMSUNG]: 0.0, // Sideways
-        [StockId.HANWHA]: 0.0, // Sideways
-        [StockId.CELLTRION]: -0.07, // Falling
-        [StockId.NAVER]: -0.07, // Falling
+        [StockId.KB]: 0.10,           // 금리 수혜
+        [StockId.KODEX_GOLD]: 0.06,   // 금 가격 상승
+        [StockId.SAMSUNG]: -0.02,      // 대형주 횡보/소폭하락
+        [StockId.NVIDIA]: -0.03,       // 기술주 압박
+        [StockId.NAVER]: -0.12,        // 성장주 직격탄
+        [StockId.TESLA]: -0.15,        // 고평가 성장주 하락
       } as any,
     },
     keyFocus: '금리 인상기에는 금융주가 방어적인 성격을 띠곤 하죠. 성장주들의 하락세를 어떻게 방어할지가 관건입니다.',
@@ -67,14 +67,14 @@ AI 산업에 자금이 몰린다.
       '지금이 거대한 기회의 시작인지, 과열의 정점인지, 판단은 PB의 몫입니다.'
     ],
     marketCondition: {
-      cashReturn: 0.02,
+      cashReturn: 0.01,
       stockReturns: {
-        [StockId.NVIDIA]: 0.20, // Rising a lot
-        [StockId.SAMSUNG]: 0.15, // Rising
-        [StockId.HANWHA]: 0.01, // Sideways
-        [StockId.KODEX_GOLD]: 0.01, // Sideways
-        [StockId.AMORE]: -0.12, // Falling
-        [StockId.SAMYANG]: -0.12, // Falling
+        [StockId.NVIDIA]: 0.35,       // AI 대장주 폭등
+        [StockId.SAMSUNG]: 0.25,      // 반도체 동반 상승
+        [StockId.TESLA]: 0.18,        // 자율주행/AI 테마
+        [StockId.NAVER]: 0.10,        // 플랫폼 기대감
+        [StockId.SAMYANG]: -0.08,     // 자금 소외
+        [StockId.AMORE]: -0.10,       // 자금 소외
       } as any,
     },
     keyFocus: 'AI 기술주들의 랠리가 무섭습니다. 과감한 베팅으로 수익률을 끌어올려 보세요!',
@@ -97,14 +97,14 @@ AI 산업에 자금이 몰린다.
       '방산 섹터에 대한 시장의 관심이 급증합니다.'
     ],
     marketCondition: {
-      cashReturn: 0.01,
+      cashReturn: 0.02,
       stockReturns: {
-        [StockId.HANWHA]: 0.10, // Rising (Defense)
-        [StockId.KODEX_GOLD]: 0.08, // Rising (Gold)
-        [StockId.SAMSUNG]: 0.0, // Sideways
-        [StockId.NVIDIA]: 0.0, // Sideways
-        [StockId.HANATOUR]: -0.25, // Falling a lot
-        [StockId.KOREAN_AIR]: -0.25, // Falling a lot
+        [StockId.HANWHA]: 0.20,       // 방산 수요 폭발
+        [StockId.KODEX_GOLD]: 0.15,   // 안전자산 선호
+        [StockId.HYUNDAI_HEAVY]: 0.08, // 에너지 수송 수요 기대
+        [StockId.SAMSUNG]: -0.05,      // 지수 하락 여파
+        [StockId.HANATOUR]: -0.30,     // 여행 중단 (치명타)
+        [StockId.KOREAN_AIR]: -0.25,   // 유가 급등 + 운항 차질
       } as any,
     },
     keyFocus: '전쟁은 여행과 항공업계에 큰 타격을 주지만, 방산과 금 같은 안전자산에는 기회가 될 수 있습니다.',
@@ -126,12 +126,12 @@ AI 산업에 자금이 몰린다.
     marketCondition: {
       cashReturn: 0.01,
       stockReturns: {
-        [StockId.CELLTRION]: 0.15, // Rising (Bio)
-        [StockId.NETFLIX]: 0.12, // Rising (Untact/Content)
-        [StockId.SAMSUNG]: 0.01, // Sideways
-        [StockId.NVIDIA]: 0.01, // Sideways
-        [StockId.KODEX_GOLD]: 0.01, // Sideways
-        [StockId.HYUNDAI_HEAVY]: -0.15, // Falling
+        [StockId.CELLTRION]: 0.25,    // 바이오/치료제 수혜
+        [StockId.NETFLIX]: 0.22,      // 홈 엔터테인먼트 급증
+        [StockId.NAVER]: 0.15,        // 비대면 쇼핑/플랫폼
+        [StockId.SAMYANG]: 0.10,      // 비상식량/내수 소비
+        [StockId.HYUNDAI_HEAVY]: -0.20, // 글로벌 제조 중단
+        [StockId.HANATOUR]: -0.40,     // 국경 봉쇄 (최악의 국면)
       } as any,
     },
     keyFocus: '팬데믹 상황에서는 바이오와 언택트 관련주들이 강세를 보입니다. 전통 제조/중화학 산업의 위기를 어떻게 피해갈지 결정하세요.',

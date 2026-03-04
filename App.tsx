@@ -173,8 +173,6 @@ const App: React.FC = () => {
     // --- Derived Data ---
     const currentScenario = ROUNDS.find((r) => r.id === gameState.currentRound);
 
-    // --- Logic Helpers ---
-
     const calculateStockPercentages = (rawAllocation: Record<StockId, number>) => {
         const totalWeight = Object.values(rawAllocation).reduce((a, b) => a + b, 0);
         const result: Partial<Record<StockId, number>> = {};
@@ -212,8 +210,7 @@ const App: React.FC = () => {
         const currentAssets = gameState.currentTotalAssets;
         const profitAmount = currentAssets * totalReturn;
         const nextAssets = Math.floor(currentAssets + profitAmount);
-
-        // 3. Chairman Satisfaction & Comment Logic (Profit-Based)
+// 3. Chairman Satisfaction & Comment Logic (Profit-Based)
         let satisfaction = 0;
         let comment = "";
 
@@ -222,10 +219,10 @@ const App: React.FC = () => {
             satisfaction = 95;
             comment = "수익률이 아주 예술이야. 자네가 사고 싶다던 그 차, 오늘 계약하러 가게.";
         } else if (profitPercent >= 0) {
-            satisfaction = 75;
+            satisfaction = 66;
             comment = "소소하구먼. 오늘 점심은 가볍게 스테이크 정도로 하지.";
         } else if (profitPercent >= -5) {
-            satisfaction = 50;
+            satisfaction = 45;
             comment = "오늘 내 커피 한 잔 값이 사라졌군. 자네, 내일은 스테이크 값을 벌어와야 할 거야.";
         } else {
             satisfaction = 20;
@@ -234,41 +231,46 @@ const App: React.FC = () => {
 
         // Scenario Specific logic & Bonuses
         const { id } = currentScenario;
-        if (id === 1) { // Round 1: Rate Hike
-            if (tempPortfolio.stockRatio > 90) {
-                satisfaction = Math.min(satisfaction, 30);
-                comment = "자네, 사막의 밤이 왜 무서운지 아나? 지금 내 기분이 딱 그렇군.";
+        if (id === 1) {
+            // Round 1: 금리 인상기 — 3% 이상이면 잘한 것
+            if (profitPercent >= 5) {
+                satisfaction = 95;
+                comment = "금리 인상기에 이 정도면 예술이야. 자네가 사고 싶다던 그 차, 오늘 계약하러 가게.";
+            } else if (profitPercent >= 1) {
+                satisfaction = 78;
+                comment = "시장이 흔들리는데 수익을 지켜냈군. 수고 많았네.";
             }
         } else if (id === 2) { // Round 2: AI Rally
-            if (normalizedStocks[StockId.NVIDIA] > 20 && profitPercent > 0) {
-                satisfaction = Math.min(satisfaction + 5, 100);
-                comment = "AI 대장주를 낚아채는 솜씨가 아주 예술이야. 자네가 사고 싶다던 그 차, 오늘 계약하러 가게.";
-            } else if (tempPortfolio.stockRatio < 50) {
-                satisfaction = Math.max(satisfaction - 10, 0);
-                comment = "시장이 이렇게 불타는데 겨우 커피값이나 벌어오다니... 자네, 사막의 밤이 왜 무서운지 아나?";
+            const nvidiaNorm = normalizedStocks[StockId.NVIDIA] ?? 0;
+            const samsungNorm = normalizedStocks[StockId.SAMSUNG] ?? 0;
+            if ((nvidiaNorm > 20 || samsungNorm > 20) && profitPercent > 8) {
+                satisfaction = Math.min(satisfaction + 10, 100);
+                comment = "AI 대장주를 제대로 낚아챘군! 자네가 사고 싶다던 그 차, 오늘 계약하러 가게.";
             }
         } else if (id === 3) { // Round 3: Geopolitics (War)
-            if (normalizedStocks[StockId.HANWHA] > 20 && profitPercent > 0) {
-                satisfaction = Math.min(satisfaction + 5, 100);
+            const hanatourNorm = normalizedStocks[StockId.HANATOUR] ?? 0;
+            const koreanAirNorm = normalizedStocks[StockId.KOREAN_AIR] ?? 0;
+            const hanhwaNorm = normalizedStocks[StockId.HANWHA] ?? 0;
+
+            if (hanhwaNorm > 20 && profitPercent >= 5) {
+                satisfaction = Math.min(satisfaction + 10, 100);
                 comment = "방산주로 리스크를 예술적으로 방어했군! 오늘 당장 차 계약하러 가게나.";
-            } else if (tempPortfolio.stockRatio > 80) {
-                satisfaction = Math.min(satisfaction, 20);
-                comment = "자네, 사막의 밤이 왜 무서운지 아나? 지금 내 기분이 딱 그렇군.";
+            } else if ((hanatourNorm > 15 || koreanAirNorm > 15) && profitPercent <= -5) {
+                satisfaction = Math.max(satisfaction - 10, 0);
+                comment = "총소리가 들리는데 여행주를 들고 있었다고? 자네, 사막의 밤이 왜 무서운지 아나?";
             }
         } else if (id === 4) { // Round 4: Pandemic
-            if ((normalizedStocks[StockId.CELLTRION] > 15 || normalizedStocks[StockId.NETFLIX] > 15) && profitPercent > 0) {
+            const celltrionNorm = normalizedStocks[StockId.CELLTRION] ?? 0;
+            const netflixNorm = normalizedStocks[StockId.NETFLIX] ?? 0;
+            if ((celltrionNorm > 15 || netflixNorm > 15) && profitPercent > 5) {
                 satisfaction = Math.min(satisfaction + 5, 100);
-                comment = "포트폴리오 구성이 아주 예술이야! 오늘 당장 그 차 계약하러 가게.";
-            } else if (tempPortfolio.stockRatio < 30) {
-                satisfaction = Math.max(satisfaction - 10, 0);
-                comment = "반등 기회에 커피값이나 벌고 있다니... 지금 내 기분은 사막의 밤보다 더 차갑군.";
+                comment = "세상이 멈출수록 돈 버는 주식이 있다는 걸 알고 있었군. 자네가 사고 싶다던 그 차, 오늘 계약하러 가게.";
             }
         }
 
         // Cap Score
         if (satisfaction > 100) satisfaction = 100;
         if (satisfaction < 0) satisfaction = 0;
-
         // Save Result
         setGameState(prev => ({
             ...prev,
