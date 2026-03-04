@@ -309,7 +309,7 @@ const App: React.FC = () => {
             const messages: Record<string, string> = {
                 sport: "송운동님은 현재 훈련 중입니다! 천수르님의 포트폴리오를 먼저 관리해 보시겠어요?",
                 chairman: "나대표님은 현재 신규 사업 구상 중입니다! 지금은 PB로서 역량을 발휘해 보세요.",
-                idol: "엘라님은 글로벌 월드 투어 중입니다! 천수르님의 자산을 먼저 불려주시는 건 어떨까요?",
+                idol: "정엘라님은 글로벌 월드 투어 중입니다! 천수르님의 자산을 먼저 불려주시는 건 어떨까요?",
                 heir: "박재벌님은 경영 수업 중입니다! 천수르님의 자산을 먼저 관리해 보세요.",
                 newly: "김졸부님은 현재 여행 중입니다! 천수르님의 자산을 먼저 불려주시는 건 어떨까요?"
             };
@@ -368,7 +368,7 @@ const App: React.FC = () => {
                         { id: 'rich', name: '천수르', role: '초고액자산가', img: '/assets/characters/rich_neutral.jpg', available: true },
                         { id: 'sport', name: '송운동', role: '스포츠스타', img: '/assets/characters/sport_neutral.jpg', available: false },
                         { id: 'heir', name: '박재벌', role: '재벌3세', img: '/assets/characters/heir_neutral.jpg', available: false },
-                        { id: 'idol', name: '엘라', role: '아이돌', img: '/assets/characters/idol_neutral.jpg', available: false },
+                        { id: 'idol', name: '정엘라', role: '아이돌', img: '/assets/characters/idol_neutral.jpg', available: false },
                         { id: 'newly', name: '김졸부', role: '벼락부자', img: '/assets/characters/newly_neutral.jpg', available: false },
                         { id: 'chairman', name: '나대표', role: 'CEO', img: '/assets/characters/chairman_neutral.jpg', available: false }
                     ].map((char) => (
@@ -466,7 +466,7 @@ const App: React.FC = () => {
                                         <span className="bg-[#F2F4F7] text-[#1A1F27] text-[9px] px-2 py-0.5 rounded-full font-black tracking-widest uppercase mb-1.5 inline-block">CLIENT PROFILE</span>
                                         <div className="flex items-center gap-2">
                                             <h3 className="text-[20px] font-black text-[#1A1F27] tracking-tight">
-                                                {gameState.selectedCharacter === 'idol' ? '엘라' : 
+                                                {gameState.selectedCharacter === 'idol' ? '정엘라' : 
                                                  gameState.selectedCharacter === 'chairman' ? '나대표' : 
                                                  gameState.selectedCharacter === 'sport' ? '송운동' : 
                                                  gameState.selectedCharacter === 'heir' ? '박재벌' :
