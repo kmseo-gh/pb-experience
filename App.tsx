@@ -382,8 +382,8 @@ const App: React.FC = () => {
                                 <img src={char.img} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt={char.name} />
                             </div>
                             <div className="text-left px-2 mb-1">
-                                <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none mb-1">{char.role}</p>
-                                <h3 className="text-[14px] font-black text-[#1A1F27] tracking-tight">{char.name}</h3>
+                                <p className="text-[12px] text-slate-400 font-black uppercase tracking-widest leading-none">{char.role}</p>
+                                <h3 className="text-[17px] font-black text-[#1A1F27] tracking-tight">{char.name}</h3>
                             </div>
                             {gameState.selectedCharacter === char.id && (
                                 <div className="absolute top-4 right-4 w-6 h-6 bg-[#0351FF] rounded-full flex items-center justify-center shadow-lg shadow-blue-500/30">
